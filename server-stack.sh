@@ -3,10 +3,10 @@ sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
 
 sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
 
-sudo pacman --noconfirm -Sy apache php-apache mariadb phpmyadmin certbot certbot-apache
+sudo pacman --noconfirm -Sy apache php-apache mariadb certbot certbot-apache
 
 sudo cp /home/arch/init-scripts/files/httpd.conf /etc/httpd/conf/httpd.conf
-sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
+# sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
 sudo chown -R root:root /etc/httpd/conf/httpd.conf
 sudo cp /home/arch/init-scripts/files/index.php /srv/http/index.php
 
@@ -23,7 +23,7 @@ sudo systemctl enable php-fpm --now
 sudo systemctl start httpd --now
 sudo systemctl enable httpd --now
 
-mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 sudo rm /etc/my.cnf.d/server.cnf
 sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
