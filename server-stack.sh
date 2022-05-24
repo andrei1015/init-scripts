@@ -10,6 +10,8 @@ sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpm
 sudo chown -R root:root /etc/httpd/conf/httpd.conf
 sudo cp /home/arch/init-scripts/files/index.php /srv/http/index.php
 
+
+# PHP-FPM
 sudo touch /etc/httpd/conf/extra/php-fpm.conf
 echo "DirectoryIndex index.php index.html" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
 echo "<FilesMatch \.php$>" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
@@ -25,10 +27,12 @@ sudo systemctl enable php-fpm --now
 sudo systemctl start httpd --now
 sudo systemctl enable httpd --now
 
+
+# MARIADB PLS BEHAVE
 sudo rm /etc/my.cnf.d/server.cnf
 sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
 sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-sudo mysqladmin -u root password "superpass"
+sudo mariadb-admin -u root password "superpass"
 sudo mariadb < /home/arch/init-scripts/files/mysql.host.sql
 sudo mariadb < /usr/share/webapps/phpMyAdmin/sql/create_tables.sql
 sudo cp /home/arch/init-scripts/files/phpmyadmin.config /usr/share/webapps/phpMyAdmin/config.inc.php
