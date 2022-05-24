@@ -26,7 +26,8 @@ sudo systemctl start httpd --now
 sudo systemctl enable httpd --now
 
 sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-mysqladmin -u root password "superpass"
+sudo mysqladmin -u root password "superpass"
+sudo mariadb < /home/arch/init-scripts/files/phpmyadmin.sql
 
 sudo rm /etc/my.cnf.d/server.cnf
 sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
