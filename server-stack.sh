@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
 
-# sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
+sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
 
 sudo pacman --noconfirm -Sy apache php-apache phpmyadmin mariadb certbot certbot-apache
 
@@ -32,13 +32,17 @@ sudo systemctl enable httpd --now
 sudo rm /etc/my.cnf.d/server.cnf
 sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
 sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-sudo mariadb-admin -u root password "superpass"
-sudo mariadb < /home/arch/init-scripts/files/mysql.host.sql
-sudo mariadb < /usr/share/webapps/phpMyAdmin/sql/create_tables.sql
 sudo cp /home/arch/init-scripts/files/phpmyadmin.config /usr/share/webapps/phpMyAdmin/config.inc.php
 
 sudo systemctl start mariadb.service --now
 sudo systemctl enable mariadb.service --now
 sudo systemctl restart mariadb.service --now
 
+sudo mariadb-admin -u root password "superpass"
+sudo mariadb < /home/arch/init-scripts/files/mysql.host.sql
+sudo mariadb < /usr/share/webapps/phpMyAdmin/sql/create_tables.sql
+
 sudo mariadb < /home/arch/init-scripts/files/phpmyadmin.sql
+
+sudo systemctl restart httpd --now
+sudo systemctl restart mariadb.service --now
