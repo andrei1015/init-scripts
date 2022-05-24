@@ -9,7 +9,6 @@ sudo rm -rf /srv/http/*
 sudo mv /home/arch/wordpress-zip/wordpress/* /srv/http
 rm -rf /home/arch/wordpress-zip
 sudo chown -R http:http /srv/http
-sudo sed -i 's/;extension=mysqli/extension=mysqli/g' /etc/php/php.ini
 sudo systemctl restart httpd
 
 sudo mariadb < /home/arch/init-scripts/files/wordpress.sql
