@@ -2,6 +2,7 @@
 sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
 
 sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
+sudo dd if=/dev/null of=/etc/php/conf.d/snuffleupagus.rules #STFU
 
 sudo pacman --noconfirm -Sy apache php-apache phpmyadmin mariadb certbot certbot-apache
 
@@ -46,3 +47,4 @@ sudo mariadb < /home/arch/init-scripts/files/phpmyadmin.sql
 
 sudo systemctl restart httpd --now
 sudo systemctl restart mariadb.service --now
+sudo systemctl restart php-fpm --now
