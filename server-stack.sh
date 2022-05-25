@@ -6,7 +6,7 @@ sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/s
 sudo pacman --noconfirm -Sy apache php-apache phpmyadmin mariadb certbot certbot-apache
 
 sudo cp /home/arch/init-scripts/files/httpd.conf /etc/httpd/conf/httpd.conf
-sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
+sudo cp /home/arch/init-scripts/files/phpmyadmin.httpd.conf /etc/httpd/conf/extra/phpmyadmin.conf
 sudo chown -R root:root /etc/httpd/conf/httpd.conf
 sudo cp /home/arch/init-scripts/files/index.php /srv/http/index.php
 
