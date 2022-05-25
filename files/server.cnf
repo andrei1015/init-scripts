@@ -10,7 +10,7 @@
 
 # this is only for the mysqld standalone daemon
 [mysqld]
-bind-address = 127.0.0.1
+skip-networking
 
 #
 # * Galera-related settings
