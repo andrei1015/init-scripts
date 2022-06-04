@@ -1,4 +1,4 @@
-GRANT USAGE ON mysql.* TO 'pma'@'localhost' IDENTIFIED BY 'pmapass';
+GRANT USAGE ON mysql.* TO 'pma'@'localhost' IDENTIFIED BY 'PMA_USER_PASS';
 GRANT SELECT (
     Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
     Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,

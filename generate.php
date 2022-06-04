@@ -7,6 +7,9 @@ $GIT_NAME = 'username';
 $GIT_EMAIL = 'you@email.com';
 $WEBSITE = 'domain.com';
 
+$PMA_ROOT_PASS = 'pma_root_pass';
+$PMA_USER_PASS = 'pma_user_pass';
+
 $MATOMO_DB = 'matomo_db';
 $MATOMO_USER = 'matomo-db-use';
 $MATOMO_PASS = 'super-secure-passwor';
@@ -82,6 +85,21 @@ elseif ($argv[1] === 'wordpress') {
     else {
         replace_in_file('files/wordpress-config.php','WORDPRESS_DB', $WORDPRESS_DB);
         replace_in_file('files/wordpress-config.php','WORDPRESS_USER', $WORDPRESS_USER);
+        replace_in_file('files/wordpress-config.php','WORDPRESS_PASS', $WORDPRESS_PASS);
+        replace_in_file('files/wordpress.sql','WORDPRESS_DB', $WORDPRESS_DB);
+        replace_in_file('files/wordpress.sql','WORDPRESS_USER', $WORDPRESS_USER);
+        replace_in_file('files/wordpress.sql','WORDPRESS_PASS', $WORDPRESS_PASS);
+        echo 'wordpress config done'.PHP_EOL;
+    }
+}
+elseif ($argv[1] === 'phpmyadmin') {
+    if ($PMA_ROOT_PASS = 'pma_root_pass' || $PMA_USER_PASS = 'pma_user_pass') {
+        echo 'phpmyadmin credentials haven\'t (all?) changed'.PHP_EOL;
+        die();
+    }
+    else {
+        replace_in_file('server-stack.sh','PMA_ROOT_PASS', $$PMA_ROOT_PASS);
+        replace_in_file('files/phpmyadmin.sql','PMA_USER_PASS', $PMA_USER_PASS);
         replace_in_file('files/wordpress-config.php','WORDPRESS_PASS', $WORDPRESS_PASS);
         replace_in_file('files/wordpress.sql','WORDPRESS_DB', $WORDPRESS_DB);
         replace_in_file('files/wordpress.sql','WORDPRESS_USER', $WORDPRESS_USER);

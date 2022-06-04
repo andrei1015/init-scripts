@@ -39,7 +39,7 @@ sudo systemctl start mariadb.service --now
 sudo systemctl enable mariadb.service --now
 sudo systemctl restart mariadb.service --now
 
-sudo mariadb-admin -u root password "superpass"
+sudo mariadb-admin -u root password "PMA_ROOT_PASS"
 sudo mariadb < /home/arch/init-scripts/files/mysql.host.sql
 sudo mariadb < /usr/share/webapps/phpMyAdmin/sql/create_tables.sql
 
