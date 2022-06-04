@@ -13,7 +13,7 @@ reflector --country "<ISO 3166-1 Alpha-2 Country Code>" --protocol https,http --
 pacman --noconfirm -Syy
 
 # MY PREFERENCE OF BASIC MUST HAVE PACKAGES, NEOFETCH INCLUDED OF COURSE
-pacman --noconfirm --needed -Sy base-devel git github-cli nano htop btop neofetch mc tmux python exa wget ncdu figlet zip unzip rsync lynx
+pacman --noconfirm --needed -Sy base-devel git github-cli nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
 
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
 mkdir /home/arch/yay
@@ -55,10 +55,10 @@ sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 
 #YAY FUN
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'yay --noconfirm -Sy hstr botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'yay --noconfirm -Sy micro pfetch hstr botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
 
 # ADD BOTSAY TO MOTD FOR FUN OF COURSE
 
 dd if=/dev/null of=/etc/motd
 
-echo -e 'botsay -c "Welcome to Arch btw!"' >> /home/arch/.bash_profile
+echo -e 'botsay -c "Welcome to 🐧 Arch btw!"' >> /home/arch/.bash_profile
