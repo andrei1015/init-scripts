@@ -13,7 +13,7 @@ reflector --country "<ISO 3166-1 Alpha-2 Country Code>" --protocol https,http --
 pacman --noconfirm -Syy
 
 # MY PREFERENCE OF BASIC MUST HAVE PACKAGES
-pacman --noconfirm --needed -Sy base-devel asciinema bat croc git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
+pacman --noconfirm --needed -Sy base-devel asciinema bat croc duf git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
 
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
 mkdir /home/arch/yay
