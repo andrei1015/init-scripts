@@ -12,7 +12,7 @@ pacman-key --populate archlinux
 reflector --country "<ISO 3166-1 Alpha-2 Country Code>" --protocol https,http --score 20 --sort rate --save /etc/pacman.d/mirrorlist
 pacman --noconfirm -Syy
 
-# MY PREFERENCE OF BASIC MUST HAVE PACKAGES, NEOFETCH INCLUDED OF COURSE
+# MY PREFERENCE OF BASIC MUST HAVE PACKAGES
 pacman --noconfirm --needed -Sy base-devel asciinema bat croc git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
 
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
@@ -28,6 +28,8 @@ chown -R arch:arch /home/arch/.bash_history
 # shopt -s histappend
 
 # DO STUFF IN .BASHRC
+dd if=/dev/null of=/home/arch/.bashrc
+echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo "alias ea='exa -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias cht='cht.sh'"  >>  /home/arch/.bashrc
@@ -44,11 +46,9 @@ echo "yay --save --builddir /home/arch/yay"  >>  /home/arch/.bashrc
 # HISTORY SHENANIGANS IN BASHRC
 echo "export HISTSIZE=-1"  >>  /home/arch/.bashrc
 echo "export HISTFILESIZE=-1"  >>  /home/arch/.bashrc
-echo "export HISTCONTROL=erasedups"  >>  /home/arch/.bashrc
-echo "export HSTR_CONFIG=hicolor"  >>  /home/arch/.bashrc
-echo "export HSTR_CONFIG=raw-history-view"  >>  /home/arch/.bashrc
-echo "export HSTR_CONFIG=warning"  >>  /home/arch/.bashrc
-echo "export PROMPT_COMMAND='history -a; history -n; ${PROMPT_COMMAND}'"  >>  /home/arch/.bashrc
+echo "export HISTCONTROL='erasedups'"  >>  /home/arch/.bashrc
+echo "export HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '"  >>  /home/arch/.bashrc
+echo "alias hs='history | grep'"  >>  /home/arch/.bashrc
 
 # MAKE PACMAN/YAY BEAUTIFUL
 sed -ie '/^# Misc options/a Color' /etc/pacman.conf
@@ -56,7 +56,7 @@ sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 
 #YAY FUN
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'yay --noconfirm -Sy pfetch hstr botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'yay --noconfirm -Sy pfetch botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
 
 # ADD BOTSAY TO MOTD FOR FUN OF COURSE
 
