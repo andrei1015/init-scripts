@@ -25,6 +25,8 @@ cd /home/arch/yay
 git clone https://aur.archlinux.org/yay-bin.git
 chown -R arch:arch /home/arch/yay
 runuser -l  arch -c 'cd /home/arch/yay/yay-bin; makepkg -si --noconfirm PKGBUILD'
+runuser -l  arch -c 'yay --save --singlelineresults'
+runuser -l  arch -c 'yay --save --builddir /home/arch/yay'
 
 
 # HISTORY IS A BIT FUNKY OUT OF THE BOX
@@ -44,10 +46,6 @@ echo "alias lynx='lynx -accept_all_cookies -number_fields -number_links -use_mou
 echo "export EXA_COLORS='di=1;31:da=1;37:uu=1;31:gu=1;35:fi=1;37:sn=1;35'"  >>  /home/arch/.bashrc
 echo "export PS1='\[\e[0m\][\[\e[0;31m\]\u \[\e[0m\]@ \[\e[0;92m\]\w \[\e[0m\]@ \[\e[0;36m\]\t\[\e[0m\]] \[\e[0;97m\]\\$ \[\e[0;96m\]\$(git branch 2>/dev/null | grep '\"'\"'^*'\"'\"' | colrm 1 2) \[\e[0m\]'"  >>  /home/arch/.bashrc
 
-# MAKE YAY BEHAVE A BIT
-echo "yay --save --singlelineresults"  >>  /home/arch/.bashrc
-echo "yay --save --builddir /home/arch/yay"  >>  /home/arch/.bashrc
-
 # HISTORY SHENANIGANS IN BASHRC
 echo "export HISTSIZE=-1"  >>  /home/arch/.bashrc
 echo "export HISTFILESIZE=-1"  >>  /home/arch/.bashrc
@@ -63,10 +61,9 @@ sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 touch /home/arch/aur-init-install.log
 runuser -l  arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
 rm /var/lib/pacman/db.lck
+runuser -l  arch -c 'yay --noconfirm --answerupgrade=None -Yc'
 
 # ADD BOTSAY TO MOTD FOR FUN OF COURSE
-
-runuser -l  arch -c 'yay --noconfirm --answerupgrade=None -Yc'
 
 dd if=/dev/null of=/etc/motd
 
