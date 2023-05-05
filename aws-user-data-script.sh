@@ -19,6 +19,8 @@ pacman --noconfirm -Syyu
 rm /var/lib/pacman/db.lck
 pacman --noconfirm --needed -Sy base-devel asciinema bat croc duf git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
 
+echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
+
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
 mkdir /home/arch/yay
 cd /home/arch/yay
