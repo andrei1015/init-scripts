@@ -1,18 +1,22 @@
 #!/bin/bash
 
-sudo timedatectl set-timezone Europe/Amsterdam
+echo "+++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++++++++++++++++SCRIPT START+++++++++++++++++++"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++"
+timedatectl set-timezone Europe/Amsterdam
 
-cd /home/arch
+# PACMAN INIT
 
-# PACMAN INIT (DOESN'T WORK ON EC2 OPTIMISED KERNEL FOR SOME REASON)
 pacman-key --init
-pacman --noconfirm -Sy archlinux-keyring
-pacman-key --refresh-keys
-pacman-key --populate archlinux
-reflector --country "<ISO 3166-1 Alpha-2 Country Code>" --protocol https,http --score 20 --sort rate --save /etc/pacman.d/mirrorlist
-pacman --noconfirm -Syy
+pacman-key --populate
+reflector --country "NL" --protocol https,http --score 20 --sort rate --save /etc/pacman.d/mirrorlist
+# pacman --noconfirm -Sy archlinux-keyring
+# pacman-key --populate archlinux
+
+pacman --noconfirm -Syyu
 
 # MY PREFERENCE OF BASIC MUST HAVE PACKAGES
+rm /var/lib/pacman/db.lck
 pacman --noconfirm --needed -Sy base-devel asciinema bat croc duf git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
 
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
@@ -21,6 +25,7 @@ cd /home/arch/yay
 git clone https://aur.archlinux.org/yay-bin.git
 chown -R arch:arch /home/arch/yay
 runuser -l  arch -c 'cd /home/arch/yay/yay-bin; makepkg -si --noconfirm PKGBUILD'
+
 
 # HISTORY IS A BIT FUNKY OUT OF THE BOX
 touch /home/arch/.bash_history
@@ -56,12 +61,17 @@ sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 
 #YAY FUN
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'yay --noconfirm -Sy pfetch botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
+rm /var/lib/pacman/db.lck
 
 # ADD BOTSAY TO MOTD FOR FUN OF COURSE
+
+runuser -l  arch -c 'yay --noconfirm --answerupgrade=None -Yc'
 
 dd if=/dev/null of=/etc/motd
 
 echo -e 'botsay -c "Welcome to 🐧 Arch btw!"' >> /home/arch/.bash_profile
 
-runuser -l  arch -c 'yay --noconfirm -Yc'
+echo "+++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++++++++++++++++SCRIPT END+++++++++++++++++++++"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++"
