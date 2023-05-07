@@ -17,9 +17,13 @@ pacman --noconfirm -Syyu
 
 # MY PREFERENCE OF BASIC MUST HAVE PACKAGES
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy base-devel asciinema bat croc duf git github-cli micro nano htop btop mc tmux python exa wget ncdu figlet zip unzip rsync lynx
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf exa figlet git github-cli htop lynx mc micro nano ncdu python rsync tmux ufw unzip wget zip
 
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 22/tcp
+sudo ufw enable
 
 # INSTALL YAY BECAUSE WHY EVEN USE PACMAN?
 mkdir /home/arch/yay
@@ -39,6 +43,7 @@ chown -R arch:arch /home/arch/.bash_history
 # DO STUFF IN .BASHRC
 dd if=/dev/null of=/home/arch/.bashrc
 echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
+echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> ~/.bashrc
 echo "alias ea='exa -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias cht='cht.sh'"  >>  /home/arch/.bashrc
