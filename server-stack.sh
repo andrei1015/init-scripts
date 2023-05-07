@@ -1,33 +1,48 @@
-#!/bin/bash
-sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
+# #!/bin/bash
 
-sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
+sudo pacman -Syu --noconfirm
+sudo pacman --noconfirm -Sy apache
+sudo systemctl start httpd.service
+sudo systemctl enable httpd.service
+sudo systemctl status httpd.service
 
-sudo pacman --noconfirm -Sy apache php-apache mariadb certbot certbot-apache
+sudo pacman -S mysql --noconfirm
 
-sudo cp /home/arch/init-scripts/files/httpd.conf /etc/httpd/conf/httpd.conf
-# sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
-sudo chown -R root:root /etc/httpd/conf/httpd.conf
-sudo cp /home/arch/init-scripts/files/index.php /srv/http/index.php
+sudo rm -rf /var/lib/mysql/*
+sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo systemctl start mysqld.service
+sudo systemctl enable mysqld.service
 
-sudo touch /etc/httpd/conf/extra/php-fpm.conf
-echo "DirectoryIndex index.php index.html" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo "<FilesMatch \.php$>" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo 'SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"' | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo '</FilesMatch>' | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
+echo -e "\nY\npassword\npassword\nY\nY\nY\nY\n" | sudo mysql_secure_installation
 
-sudo chown -R arch:arch /srv/http
+sudo pacman -Sy php php-apache php-gd php-mcrypt --noconfirm
+sudo sed -i 's/^#\(LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so\)/\1/' /etc/httpd/conf/httpd.conf
+sudo sh -c 'echo "LoadModule php_module modules/libphp.so" >> /etc/httpd/conf/httpd.conf'
+sudo sh -c 'echo "AddHandler php-script php" >> /etc/httpd/conf/httpd.conf'
+sudo sh -c 'echo "Include conf/extra/php_module.conf" >> /etc/httpd/conf/httpd.conf'
 
-sudo systemctl start php-fpm --now
-sudo systemctl enable php-fpm --now
-sudo systemctl start httpd --now
-sudo systemctl enable httpd --now
+sudo systemctl restart httpd
 
-sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+echo "test" > /srv/http/index.html
 
-sudo rm /etc/my.cnf.d/server.cnf
-sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
+echo "<?php\nphpinfo()\n?>" | tee /srv/http/test.php > /dev/null
 
-sudo systemctl start mariadb.service --now
-sudo systemctl enable mariadb.service --now
-sudo systemctl restart mariadb.service --now
+sudo pacman -S --noconfirm phpmyadmin
+
+sudo sed -i 's/^;\(extension=mysqli\)/\1/' /etc/php/php.ini
+sudo sed -i 's/^;\(extension=pdo_mysql\)/\1/' /etc/php/php.ini
+sudo sed -i 's/^;\(extension=iconv\)/\1/' /etc/php/php.ini
+
+cat <<EOF > /etc/httpd/conf/extra/phpmyadmin.conf
+Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
+<Directory "/usr/share/webapps/phpMyAdmin">
+	DirectoryIndex index.php
+	AllowOverride All
+	Options FollowSymlinks
+	Require all granted
+</Directory>
+EOF
+
+echo 'Include conf/extra/phpmyadmin.conf' | sudo tee -a /etc/httpd/conf/httpd.conf
+
+sudo systemctl restart httpd
