@@ -5,7 +5,6 @@ sudo pacman -Syu --noconfirm
 sudo pacman --noconfirm -Sy apache
 sudo systemctl start httpd
 sudo systemctl enable httpd
-sudo systemctl status httpd
 
 # 2. Yeehaw! We're wrangling up a mighty fine database with Mariadb. Much obliged to the fine folks who made it possible!
 sudo pacman -S mysql --noconfirm
@@ -18,16 +17,39 @@ echo -e "\nY\npassword\npassword\nY\nY\nY\nY\n" | sudo mysql_secure_installation
 
 # 3. Ahoy matey! We be settin' sail to install PHP now! This timeless classic be a staple in every pirate's arsenal. Let us give a hearty thanks to the open-source community for providing us with this treasure trove of a language!
 sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
-sudo sed -i 's/^#\(LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so\)/\1/' /etc/httpd/conf/httpd.conf
-sudo sed -i 's/^\(LoadModule mpm_worker_module modules\/mod_mpm_worker.so\)/# \1/' /etc/httpd/conf/httpd.conf
-sudo sed -i 's/^\(LoadModule mpm_event_module modules\/mod_mpm_event.so\)/# \1/' /etc/httpd/conf/httpd.conf
-sudo sh -c 'echo "LoadModule php_module modules/libphp.so" >> /etc/httpd/conf/httpd.conf'
-sudo sh -c 'echo "AddHandler php-script php" >> /etc/httpd/conf/httpd.conf'
-sudo sh -c 'echo "Include conf/extra/php_module.conf" >> /etc/httpd/conf/httpd.conf'
+# sudo sed -i 's/^#\(LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so\)/\1/' /etc/httpd/conf/httpd.conf
+# sudo sed -i 's/^\(LoadModule mpm_worker_module modules\/mod_mpm_worker.so\)/# \1/' /etc/httpd/conf/httpd.conf
+# sudo sed -i 's/^\(LoadModule mpm_event_module modules\/mod_mpm_event.so\)/# \1/' /etc/httpd/conf/httpd.conf
+# sudo sh -c 'echo "LoadModule php_module modules/libphp.so" >> /etc/httpd/conf/httpd.conf'
+# sudo sh -c 'echo "AddHandler php-script php" >> /etc/httpd/conf/httpd.conf'
+# sudo sh -c 'echo "Include conf/extra/php_module.conf" >> /etc/httpd/conf/httpd.conf'
 
-sudo systemctl restart httpd
+sudo sed -i 's/^#LoadModule proxy_module/LoadModule proxy_module/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^#LoadModule proxy_fcgi_module/LoadModule proxy_fcgi_module/' /etc/httpd/conf/httpd.conf
+
+
+sudo systemctl reload httpd
+
+sudo sed -i 's/^LoadModule mpm_prefork_module/#LoadModule mpm_prefork_module/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^#LoadModule mpm_event_module/LoadModule mpm_event_module/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^LoadModule mpm_worker_module/#LoadModule mpm_worker_module/' /etc/httpd/conf/httpd.conf
+
+sudo tee /etc/httpd/conf/extra/php-fpm.conf > /dev/null <<EOT
+DirectoryIndex index.php index.html
+<FilesMatch \.php$>
+    SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"
+</FilesMatch>
+EOT
+
+sudo sh -c "echo 'Include conf/extra/php-fpm.conf' >> /etc/httpd/conf/httpd.conf"
+
+sudo sed -i 's/#LoadModule\ http2_module/LoadModule\ http2_module/' /etc/httpd/conf/httpd.conf
+sudo echo "Protocols h2 http/1.1" >> /etc/httpd/conf/httpd.conf
+
 sudo systemctl enable php-fpm
 sudo systemctl start php-fpm
+sudo systemctl restart php-fpm
+sudo systemctl restart httpd
 
 # 4. Just invoke the magic of the file creation spells and let the power of HTML and PHP bring your pages to life. With a flick of the wand and a few muttered enchantments, behold your pages shall appear before your very eyes.
 sudo sh -c 'echo "test" > /srv/http/index.html'
@@ -52,7 +74,7 @@ Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
 </Directory>
 EOF
 
-sudo sed -i "s#^.*blowfish_secret.*$#\$cfg['blowfish_secret'] = '$(openssl rand -base64 24 | tr -d '\n\r')';#" /etc/webapps/phpmyadmin/config.inc.php
+sudo sed -i "s|^\(\$cfg\['blowfish_secret'\]\s*=\s*\).*$|\1'$(openssl rand -base64 24 | tr -d '\n\r')';|" /etc/webapps/phpmyadmin/config.inc.php
 sudo mkdir /usr/share/webapps/phpMyAdmin/tmp
 sudo chown -R http:http /usr/share/webapps/phpMyAdmin/tmp/
 sudo chmod -R 777 /usr/share/webapps/phpMyAdmin/tmp/
