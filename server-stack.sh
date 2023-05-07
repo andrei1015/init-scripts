@@ -52,7 +52,7 @@ Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
 </Directory>
 EOF
 
-sudo sed -i "s/^.*blowfish_secret.*$/\$cfg['blowfish_secret'] = '$(openssl rand -base64 24 | tr -d '\n\r')';/" /etc/webapps/phpmyadmin/config.inc.php
+sudo sed -i "s#^.*blowfish_secret.*$#\$cfg['blowfish_secret'] = '$(openssl rand -base64 24 | tr -d '\n\r')';#" /etc/webapps/phpmyadmin/config.inc.php
 sudo mkdir /usr/share/webapps/phpMyAdmin/tmp
 sudo chown -R http:http /usr/share/webapps/phpMyAdmin/tmp/
 sudo chmod -R 777 /usr/share/webapps/phpMyAdmin/tmp/
