@@ -1,33 +1,59 @@
-#!/bin/bash
+# #!/bin/bash
+
+# 1. 👑 Verily, the installation of Apache is upon us! Let us rejoice in the greatness of this noble software and the esteemed developers who hath crafted it! 🎉
+sudo pacman -Syu --noconfirm
+sudo pacman --noconfirm -Sy apache
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# 2. 🤠 Yeehaw! We're wrangling up a mighty fine database with Mariadb. Much obliged to the fine folks who made it possible! 🌵 
+sudo pacman -S mysql --noconfirm
+sudo rm -rf /var/lib/mysql/*
+sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo systemctl start mysqld
+sudo systemctl enable mysqld
+
+echo -e "\nY\npassword\npassword\nY\nY\nY\nY\n" | sudo mysql_secure_installation
+
+# 3. ⚓ Ahoy matey! We be settin' sail to install PHP now! This timeless classic be a staple in every pirate's arsenal. Let us give a hearty thanks to the open-source community for providing us with this treasure trove of a language! 🏴‍☠️
 sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
+sudo sed -i 's/^#\(LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so\)/\1/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^\(LoadModule mpm_worker_module modules\/mod_mpm_worker.so\)/# \1/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^\(LoadModule mpm_event_module modules\/mod_mpm_event.so\)/# \1/' /etc/httpd/conf/httpd.conf
+sudo sh -c 'echo "LoadModule php_module modules/libphp.so" >> /etc/httpd/conf/httpd.conf'
+sudo sh -c 'echo "AddHandler php-script php" >> /etc/httpd/conf/httpd.conf'
+sudo sh -c 'echo "Include conf/extra/php_module.conf" >> /etc/httpd/conf/httpd.conf'
 
-sudo sed -i 's/;sp.configuration_file/sp.configuration_file/g' /etc/php/conf.d/snuffleupagus.ini
+sudo systemctl restart httpd
 
-sudo pacman --noconfirm -Sy apache php-apache mariadb certbot certbot-apache
+# 4. 🧙‍♂️ Just invoke the magic of the file creation spells and let the power of HTML and PHP bring your pages to life. ✨ With a flick of the wand and a few muttered enchantments, behold your pages shall appear before your very eyes. 👀
+sudo sh -c 'echo "test" > /srv/http/index.html'
+sudo sh -c 'echo "<?php phpinfo(); ?>" > /srv/http/index.php'
+sudo chown -R http:http /srv/http/
+sudo chmod -R 755 /srv/http/
 
-sudo cp /home/arch/init-scripts/files/httpd.conf /etc/httpd/conf/httpd.conf
-# sudo cp /home/arch/init-scripts/files/phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
-sudo chown -R root:root /etc/httpd/conf/httpd.conf
-sudo cp /home/arch/init-scripts/files/index.php /srv/http/index.php
+# 5. 👋🏼💻 Alright guys, are you ready for the final piece of the puzzle? 🔍🧩 We're gonna install phpMyAdmin and take this setup to the next level! 👨🏻‍💻👩🏼‍💻 Huge shoutout to the devs behind this awesome tool, let's give them some love in the comments below! 💖 So, to get this baby up and running. 💪🏼🔥 Smash that like button and absolutely obliterate that subscribe! 🤘🏼🔔
+sudo pacman -S --noconfirm phpmyadmin
 
-sudo touch /etc/httpd/conf/extra/php-fpm.conf
-echo "DirectoryIndex index.php index.html" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo "<FilesMatch \.php$>" | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo 'SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"' | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
-echo '</FilesMatch>' | sudo tee -a /etc/httpd/conf/extra/php-fpm.conf
+sudo sed -i 's/^;\(extension=mysqli\)/\1/' /etc/php/php.ini
+sudo sed -i 's/^;\(extension=pdo_mysql\)/\1/' /etc/php/php.ini
+sudo sed -i 's/^;\(extension=iconv\)/\1/' /etc/php/php.ini
 
-sudo chown -R arch:arch /srv/http
+cat <<EOF > /etc/httpd/conf/extra/phpmyadmin.conf
+Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
+<Directory "/usr/share/webapps/phpMyAdmin">
+	DirectoryIndex index.php
+	AllowOverride All
+	Options FollowSymlinks
+	Require all granted
+</Directory>
+EOF
 
-sudo systemctl start php-fpm --now
-sudo systemctl enable php-fpm --now
-sudo systemctl start httpd --now
-sudo systemctl enable httpd --now
+sudo sed -i "s|^\(\$cfg\['blowfish_secret'\]\s*=\s*\).*$|\1'$(openssl rand -base64 24 | tr -d '\n\r')';|" /etc/webapps/phpmyadmin/config.inc.php
+sudo mkdir /usr/share/webapps/phpMyAdmin/tmp
+sudo chown -R http:http /usr/share/webapps/phpMyAdmin/tmp/
+sudo chmod -R 777 /usr/share/webapps/phpMyAdmin/tmp/
 
-sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+echo 'Include conf/extra/phpmyadmin.conf' | sudo tee -a /etc/httpd/conf/httpd.conf
 
-sudo rm /etc/my.cnf.d/server.cnf
-sudo cp /home/arch/init-scripts/files/server.cnf /etc/my.cnf.d/server.cnf
-
-sudo systemctl start mariadb.service --now
-sudo systemctl enable mariadb.service --now
-sudo systemctl restart mariadb.service --now
+sudo systemctl restart httpd
