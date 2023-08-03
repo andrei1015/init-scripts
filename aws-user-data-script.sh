@@ -8,7 +8,7 @@ timedatectl set-timezone Europe/Amsterdam
 # 1. 👋 Welcome to PACMAN INIT - where we unleash the 💪 power of Arch Linux 📦 package management with the mighty 🐊 PACMAN at our fingertips.
 pacman-key --init
 pacman-key --populate
-sudo reflector -c "NL" -l 6 -f 6 -p https --ipv6 --ipv4 --save /etc/pacman.d/mirrorlist
+sudo reflector -c "DE" -l 6 -f 6 -p https --ipv4 --save /etc/pacman.d/mirrorlist
 pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
