@@ -8,12 +8,12 @@ timedatectl set-timezone Europe/Amsterdam
 # 1. 👋 Welcome to PACMAN INIT - where we unleash the 💪 power of Arch Linux 📦 package management with the mighty 🐊 PACMAN at our fingertips.
 pacman-key --init
 pacman-key --populate
-reflector --country "NL" --protocol https,http --score 20 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector -c "DE" -l 6 -f 6 -p https --ipv4 --save /etc/pacman.d/mirrorlist
 pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf exa figlet git github-cli htop lynx mc micro nano ncdu python rsync tmux ufw unzip wget xclip zip
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf exa figlet git github-cli gdu htop lynx mc micro nano python rsync tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
@@ -60,6 +60,7 @@ echo "alias hs='history | grep'"  >>  /home/arch/.bashrc
 # 8. Don't settle for a basic package manager, hun! 💅 Let's put on some makeup and turn Pacman/Yay into a fierce and fabulous superstar. 💄🌟 With custom configurations and colorful themes, your terminal will be serving looks for days! 👑
 sed -ie '/^# Misc options/a Color' /etc/pacman.conf
 sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
+sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 
 # 9. Upgrade your terminal game with Yay and get the hottest apps in town! 🚀🔥 From productivity to gaming, we've got it all. Let's roll! 🎮💻
 touch /home/arch/aur-init-install.log
