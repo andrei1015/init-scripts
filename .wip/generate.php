@@ -8,8 +8,8 @@ $GIT_EMAIL = 'you@email.com';
 $WEBSITE = 'domain.com';
 
 $MATOMO_DB = 'matomo_db';
-$MATOMO_USER = 'matomo-db-use';
-$MATOMO_PASS = 'super-secure-passwor';
+$MATOMO_USER = 'matomo-db-user';
+$MATOMO_PASS = 'super-secure-password';
 
 $WORDPRESS_DB = 'wordpress_database';
 $WORDPRESS_USER = 'wordpress-database-user';
