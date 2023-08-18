@@ -6,7 +6,7 @@ sudo pacman --noconfirm -Sy apache
 sudo systemctl start httpd
 sudo systemctl enable httpd
 
-# 2. 🤠 Yeehaw! We're wrangling up a mighty fine database with Mariadb. Much obliged to the fine folks who made it possible! 🌵 
+# 2. 🤠 Yeehaw! We're wrangling up a mighty fine database with Mariadb. Much obliged to the fine folks who made it possible! 🌵
 sudo pacman -S mysql --noconfirm
 sudo rm -rf /var/lib/mysql/*
 sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -39,15 +39,15 @@ sudo sed -i 's/^;\(extension=mysqli\)/\1/' /etc/php/php.ini
 sudo sed -i 's/^;\(extension=pdo_mysql\)/\1/' /etc/php/php.ini
 sudo sed -i 's/^;\(extension=iconv\)/\1/' /etc/php/php.ini
 
-cat <<EOF > /etc/httpd/conf/extra/phpmyadmin.conf
+sudo bash -c 'cat <<EOF > /etc/httpd/conf/extra/phpmyadmin.conf
 Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
 <Directory "/usr/share/webapps/phpMyAdmin">
-	DirectoryIndex index.php
-	AllowOverride All
-	Options FollowSymlinks
-	Require all granted
+    DirectoryIndex index.php
+    AllowOverride All
+    Options FollowSymlinks
+    Require all granted
 </Directory>
-EOF
+EOF'
 
 sudo sed -i "s|^\(\$cfg\['blowfish_secret'\]\s*=\s*\).*$|\1'$(openssl rand -base64 24 | tr -d '\n\r')';|" /etc/webapps/phpmyadmin/config.inc.php
 sudo mkdir /usr/share/webapps/phpMyAdmin/tmp
