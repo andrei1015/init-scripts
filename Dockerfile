@@ -14,9 +14,9 @@ RUN sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 # Add user and install yay
 ARG user=arch
 RUN useradd --system --create-home $user
-RUN echo "$user ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
-# RUN echo "Cmnd_Alias YAY = /usr/sbin/makepkg,/bin/pacman" > /etc/sudoers.d/$user
-# RUN echo "$user ALL=(ALL:ALL) NOPASSWD: YAY" > /etc/sudoers.d/$user
+# RUN echo "$user ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
+RUN echo "$user ALL=(ALL:ALL) NOPASSWD: /usr/bin/makepkg" > /etc/sudoers.d/$user
+RUN echo "$user ALL=(ALL:ALL) NOPASSWD: /usr/sbin/pacman" > /etc/sudoers.d/$user
 USER $user
 WORKDIR /home/$user
 RUN git clone https://aur.archlinux.org/yay.git
