@@ -13,7 +13,7 @@ pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf exa figlet git github-cli gdu htop lynx mc micro nano python rsync tmux ufw unzip wget xclip zip
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
@@ -41,10 +41,11 @@ chown -R arch:arch /home/arch/.bash_history
 dd if=/dev/null of=/home/arch/.bashrc
 echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> /home/arch/.bashrc
-echo "alias ea='exa -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
+echo "alias ea='eza -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias cht='cht.sh'"  >>  /home/arch/.bashrc
 echo "alias clear='clear -x'"  >>  /home/arch/.bashrc
+echo "alias vim='nvim'"  >>  /home/arch/.bashrc
 echo "alias pixterm='pixterm -s 2'"  >>  /home/arch/.bashrc
 echo "alias lynx='lynx -accept_all_cookies -number_fields -number_links -use_mouse -scrollbar'"  >>  /home/arch/.bashrc
 echo "export EXA_COLORS='di=1;31:da=1;37:uu=1;31:gu=1;35:fi=1;37:sn=1;35'"  >>  /home/arch/.bashrc
