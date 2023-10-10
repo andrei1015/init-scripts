@@ -8,7 +8,7 @@ timedatectl set-timezone Europe/Amsterdam
 # 1. 👋 Welcome to PACMAN INIT - where we unleash the 💪 power of Arch Linux 📦 package management with the mighty 🐊 PACMAN at our fingertips.
 pacman-key --init
 pacman-key --populate
-sudo reflector -c "DE" -l 6 -f 6 -p https --ipv4 --save /etc/pacman.d/mirrorlist
+reflector -c "DE" -l 6 -f 6 -p https --ipv6 --save /etc/pacman.d/mirrorlist
 pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
@@ -17,10 +17,10 @@ pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figle
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw allow 22/tcp
-sudo ufw enable
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw allow 22/tcp
+ufw enable
 
 # 4. Me say use 🙌 Yay for package management. Yay make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
 mkdir /home/arch/yay

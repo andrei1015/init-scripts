@@ -7,6 +7,8 @@ RUN reflector -c "DE" -l 6 -f 6 -p https --ipv4 --save /etc/pacman.d/mirrorlist
 
 RUN pacman --noconfirm --needed -Sy iptables asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neofetch neovim python rsync tmux ufw unzip wget xclip zip
 
+EXPOSE 80
+
 RUN sed -ie '/^# Misc options/a Color' /etc/pacman.conf
 RUN sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 RUN sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
