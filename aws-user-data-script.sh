@@ -13,7 +13,7 @@ pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tmux ufw unzip wget xclip zip
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tldr tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
@@ -43,7 +43,6 @@ echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> /home/arch/.bashrc
 echo "alias ea='eza -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
-echo "alias cht='cht.sh'"  >>  /home/arch/.bashrc
 echo "alias clear='clear -x'"  >>  /home/arch/.bashrc
 echo "alias vim='nvim'"  >>  /home/arch/.bashrc
 echo "alias pixterm='pixterm -s 2'"  >>  /home/arch/.bashrc
@@ -65,7 +64,7 @@ sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 
 # 9. Upgrade your terminal game with Yay and get the hottest apps in town! 🚀🔥 From productivity to gaming, we've got it all. Let's roll! 🎮💻
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm cht.sh-git'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm'  >> /home/arch/aur-init-install.log
 rm /var/lib/pacman/db.lck
 runuser -l  arch -c 'yay --noconfirm --answerupgrade=None -Yc'
 
