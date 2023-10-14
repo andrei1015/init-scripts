@@ -17,9 +17,9 @@ pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figle
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
-ufw allow 80/tcp
-ufw allow 443/tcp
-ufw allow 22/tcp
+ufw allow 80/tcp comment "HTTP"
+ufw allow 443/tcp comment "HTTPS"
+ufw allow 22/tcp comment "SSH"
 ufw enable
 
 # 4. Me say use 🙌 Yay for package management. Yay make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
