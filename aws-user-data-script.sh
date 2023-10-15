@@ -41,6 +41,8 @@ chown -R arch:arch /home/arch/.bash_history
 dd if=/dev/null of=/home/arch/.bashrc
 echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> /home/arch/.bashrc
+echo "alias pacz='pacman -Slq | fzf --multi --preview \"pacman -Si {1}\" | xargs -ro sudo pacman -S'" >> ~/.bashrc
+echo "alias yayz='yay -Slq | fzf --multi --preview \"yay -Si {1}\" | xargs -ro yay -S'" >> ~/.bashrc
 echo "alias ea='eza -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias clear='clear -x'"  >>  /home/arch/.bashrc
@@ -51,11 +53,12 @@ echo "export EXA_COLORS='di=1;31:da=1;37:uu=1;31:gu=1;35:fi=1;37:sn=1;35'"  >>  
 echo "export PS1='\[\e[0m\][\[\e[0;31m\]\u \[\e[0m\]@ \[\e[0;92m\]\w \[\e[0m\]@ \[\e[0;36m\]\t\[\e[0m\]] \[\e[0;97m\]\\$ \[\e[0;96m\]\$(git branch 2>/dev/null | grep '\"'\"'^*'\"'\"' | colrm 1 2) \[\e[0m\]'"  >>  /home/arch/.bashrc
 
 # 7. 🚂 All aboard! 🛤️ Add some history properties to your .bashrc file and keep track of your terminal's journey like a seasoned traveler. 🧳
-echo "export HISTSIZE=-1"  >>  /home/arch/.bashrc
+echo "export HISTSIZE=1000"  >>  /home/arch/.bashrc
 echo "export HISTFILESIZE=-1"  >>  /home/arch/.bashrc
-echo "export HISTCONTROL='erasedups'"  >>  /home/arch/.bashrc
-echo "export HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '"  >>  /home/arch/.bashrc
-echo "alias hs='history | grep'"  >>  /home/arch/.bashrc
+echo "export HISTCONTROL='erasedups:ignoredups'"  >>  /home/arch/.bashrc
+echo "export PROMPT_COMMAND='history -a'"  >>  /home/arch/.bashrc
+echo "export HISTTIMEFORMAT='%F %T '"  >>  /home/arch/.bashrc
+echo "source /usr/share/fzf/key-bindings.bash"  >>  /home/arch/.bashrc
 
 # 8. Don't settle for a basic package manager, hun! 💅 Let's put on some makeup and turn Pacman/Yay into a fierce and fabulous superstar. 💄🌟 With custom configurations and colorful themes, your terminal will be serving looks for days! 👑
 sed -ie '/^# Misc options/a Color' /etc/pacman.conf
