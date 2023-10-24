@@ -74,7 +74,7 @@ sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 touch /home/arch/aur-init-install.log
 runuser -l arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm' >> /home/arch/aur-init-install.log
 rm /var/lib/pacman/db.lck
-runuser -l arch -c 'yay --noconfirm --answerupgrade=None -Yc'
+runuser -l arch -c 'yay --answerupgrade=None --noconfirm -Yc'
 
 # Final step, brave warrior! We finish strong with customizing your terminal to match your battle gear! ⚔️🛡️ Show off your skills with a sleek prompt and MOTD! Valhalla awaits! 🙌🔥
 
