@@ -23,10 +23,9 @@ ufw allow 22/tcp comment "SSH"
 ufw enable
 
 # 4. Me say use 🙌 Yay for package management. Yay make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
-mkdir /home/arch/yay
+runuser -l  arch -c 'mkdir /home/arch/yay'
 cd /home/arch/yay
-git clone https://aur.archlinux.org/yay-bin.git
-chown -R arch:arch /home/arch/yay
+runuser -l  arch -c 'git clone https://aur.archlinux.org/yay-bin.git'
 runuser -l  arch -c 'cd /home/arch/yay/yay-bin; makepkg -si --noconfirm PKGBUILD'
 runuser -l  arch -c 'yay --save --singlelineresults'
 runuser -l  arch -c 'yay --save --builddir /home/arch/yay'
@@ -41,8 +40,8 @@ chown -R arch:arch /home/arch/.bash_history
 dd if=/dev/null of=/home/arch/.bashrc
 echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> /home/arch/.bashrc
-echo "alias pacz='pacman -Slq | fzf --multi --preview \"pacman -Si {1}\" | xargs -ro sudo pacman -S'" >> ~/.bashrc
-echo "alias yayz='yay -Slq | fzf --multi --preview \"yay -Si {1}\" | xargs -ro yay -S'" >> ~/.bashrc
+echo "alias pacz='pacman -Slq | fzf --multi --preview \"pacman -Si {1}\" | xargs -ro sudo pacman -S'" >> /home/arch/.bashrc
+echo "alias yayz='yay -Slq | fzf --multi --preview \"yay -Si {1}\" | xargs -ro yay -S'" >> /home/arch/.bashrc
 echo "alias ea='eza -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias clear='clear -x'"  >>  /home/arch/.bashrc
