@@ -16,19 +16,19 @@ rm /var/lib/pacman/db.lck
 pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tldr tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
-echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
+# echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
 ufw allow 80/tcp comment "HTTP"
 ufw allow 443/tcp comment "HTTPS"
 ufw allow 22/tcp comment "SSH"
 ufw enable
 
-# 4. Me say use 🙌 Yay for package management. Yay make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
-runuser -l  arch -c 'mkdir /home/arch/yay'
-cd /home/arch/yay
-runuser -l  arch -c 'git clone https://aur.archlinux.org/yay-bin.git'
-runuser -l  arch -c 'cd /home/arch/yay/yay-bin; makepkg -si --noconfirm PKGBUILD'
-runuser -l  arch -c 'yay --save --singlelineresults'
-runuser -l  arch -c 'yay --save --builddir /home/arch/yay'
+# 4. Me say use 🙌 paru for package management. Paru make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
+# runuser -l  arch -c 'mkdir /home/arch/paru'
+# cd /home/arch/paru
+runuser -l  arch -c 'git clone https://aur.archlinux.org/paru-bin.git'
+runuser -l  arch -c 'cd /home/arch/paru-bin; makepkg -si --noconfirm'
+# runuser -l  arch -c 'paru --save --singlelineresults'
+# runuser -l  arch -c 'paru --save --builddir /home/arch/paru'
 
 
 # 5. I have just the sonic screwdriver 🔧 you need to fix history ⏰. With a simple flick of the wrist 💫 and a few choice commands 💻, we'll have that timeline back in ship-shape 🚀 in no time.
@@ -41,7 +41,7 @@ dd if=/dev/null of=/home/arch/.bashrc
 echo '[[ $- != *i* ]] && return'  >>  /home/arch/.bashrc
 echo -e 'mkcd() {\n    mkdir -p "$1" && cd "$1"\n}' >> /home/arch/.bashrc
 echo "alias pacz='pacman -Slq | fzf --multi --preview \"pacman -Si {1}\" | xargs -ro sudo pacman -S'" >> /home/arch/.bashrc
-echo "alias yayz='yay -Slq | fzf --multi --preview \"yay -Si {1}\" | xargs -ro yay -S'" >> /home/arch/.bashrc
+echo "alias paruz='paru -Slq | fzf --multi --preview \"paru -Si {1}\" | xargs -ro paru -S'" >> /home/arch/.bashrc
 echo "alias ea='eza -al --header --group --group-directories-first'"  >>  /home/arch/.bashrc
 echo "alias nano='nano --linenumbers --emptyline --mouse --indicator --magic'"  >>  /home/arch/.bashrc
 echo "alias clear='clear -x'"  >>  /home/arch/.bashrc
@@ -59,16 +59,16 @@ echo "export PROMPT_COMMAND='history -a'"  >>  /home/arch/.bashrc
 echo "export HISTTIMEFORMAT='%F %T '"  >>  /home/arch/.bashrc
 echo "source /usr/share/fzf/key-bindings.bash"  >>  /home/arch/.bashrc
 
-# 8. Don't settle for a basic package manager, hun! 💅 Let's put on some makeup and turn Pacman/Yay into a fierce and fabulous superstar. 💄🌟 With custom configurations and colorful themes, your terminal will be serving looks for days! 👑
+# 8. Don't settle for a basic package manager, hun! 💅 Let's put on some makeup and turn Pacman/paru into a fierce and fabulous superstar. 💄🌟 With custom configurations and colorful themes, your terminal will be serving looks for days! 👑
 sed -ie '/^# Misc options/a Color' /etc/pacman.conf
 sed -ie '/^# Misc options/a ILoveCandy' /etc/pacman.conf
 sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 
-# 9. Upgrade your terminal game with Yay and get the hottest apps in town! 🚀🔥 From productivity to gaming, we've got it all. Let's roll! 🎮💻
+# 9. Upgrade your terminal game with paru and get the hottest apps in town! 🚀🔥 From productivity to gaming, we've got it all. Let's roll! 🎮💻
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'yay --answerupgrade=None --noconfirm -Sy pfetch botsay pixterm'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'paru --noconfirm -S pfetch botsay pixterm'  >> /home/arch/aur-init-install.log
 rm /var/lib/pacman/db.lck
-runuser -l  arch -c 'yay --noconfirm --answerupgrade=None -Yc'
+# runuser -l  arch -c 'paru --noconfirm -Yc'
 
 # Final step, brave warrior! We finish strong with customizing your terminal to match your battle gear! ⚔️🛡️ Show off your skills with a sleek prompt and MOTD! Valhalla awaits! 🙌🔥
 
