@@ -13,22 +13,20 @@ pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy asciinema base-devel bat btop croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tldr tmux ufw unzip wget xclip zip
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop cockpit cockpit-storaged cockpit-pcp cockpit-packagekit croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tldr tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 # echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
-ufw allow 80/tcp comment "HTTP"
-ufw allow 443/tcp comment "HTTPS"
-ufw allow 22/tcp comment "SSH"
-ufw enable
+# ufw allow 80/tcp comment "HTTP"
+# ufw allow 443/tcp comment "HTTPS"
+# ufw allow 22/tcp comment "SSH"
+# ufw enable
 
 # 4. Me say use 🙌 paru for package management. Paru make everything easy-peasy like berries 🍓 on bush. No need hunt 🏹 and gather 🧺 for packages like Neanderthal. 🦕
 # runuser -l  arch -c 'mkdir /home/arch/paru'
 # cd /home/arch/paru
 runuser -l  arch -c 'git clone https://aur.archlinux.org/paru-bin.git'
 runuser -l  arch -c 'cd /home/arch/paru-bin; makepkg -si --noconfirm'
-# runuser -l  arch -c 'paru --save --singlelineresults'
-# runuser -l  arch -c 'paru --save --builddir /home/arch/paru'
 
 
 # 5. I have just the sonic screwdriver 🔧 you need to fix history ⏰. With a simple flick of the wrist 💫 and a few choice commands 💻, we'll have that timeline back in ship-shape 🚀 in no time.
@@ -66,15 +64,18 @@ sed -ie '/^# Misc options/a VerbosePkgLists' /etc/pacman.conf
 
 # 9. Upgrade your terminal game with paru and get the hottest apps in town! 🚀🔥 From productivity to gaming, we've got it all. Let's roll! 🎮💻
 touch /home/arch/aur-init-install.log
-runuser -l  arch -c 'paru --noconfirm -S pfetch botsay pixterm'  >> /home/arch/aur-init-install.log
+runuser -l  arch -c 'paru --noconfirm -S pfetch botsay pixterm cockpit-navigator'  >> /home/arch/aur-init-install.log
 rm /var/lib/pacman/db.lck
-# runuser -l  arch -c 'paru --noconfirm -Yc'
+
+
+systemctl start cockpit.socket
+systemctl enable cockpit.socket
 
 # Final step, brave warrior! We finish strong with customizing your terminal to match your battle gear! ⚔️🛡️ Show off your skills with a sleek prompt and MOTD! Valhalla awaits! 🙌🔥
 
 dd if=/dev/null of=/etc/motd
 
-echo -e 'botsay -c "Welcome to 🐧 Arch btw!"' >> /home/arch/.bash_profile
+echo -e 'botsay -c "Welcome to Arch btw!"' >> /home/arch/.bash_profile
 
 echo "+++++++++++++++++++++++++++++++++++++++++++++++"
 echo "++++++++++++++++SCRIPT END+++++++++++++++++++++"
