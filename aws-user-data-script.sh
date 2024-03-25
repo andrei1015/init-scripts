@@ -13,7 +13,7 @@ pacman --noconfirm -Syyu
 
 # 2. Behold, my preference of basic packages that must needs be present in mine system.
 rm /var/lib/pacman/db.lck
-pacman --noconfirm --needed -Sy asciinema base-devel bat btop cockpit cockpit-storaged cockpit-pcp cockpit-packagekit croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim python rsync tldr tmux ufw unzip wget xclip zip
+pacman --noconfirm --needed -Sy asciinema base-devel bat btop cockpit cockpit-storaged cockpit-pcp cockpit-packagekit croc duf eza figlet fzf git github-cli gdu htop lynx mc micro nano neovim networkmanager python rsync tldr tmux ufw unzip wget xclip zip
 
 # 3. 🌐 Network Stuff: 🔑 5 Secrets Every Dev Needs to Know (and Why Some of Them Are Hated) 😡
 # echo "nameserver 1.1.1.1"  >>  /etc/resolv.conf
@@ -70,6 +70,8 @@ rm /var/lib/pacman/db.lck
 
 systemctl start cockpit.socket
 systemctl enable cockpit.socket
+systemctl enable NetworkManager
+systemctl start NetworkManager
 
 # Final step, brave warrior! We finish strong with customizing your terminal to match your battle gear! ⚔️🛡️ Show off your skills with a sleek prompt and MOTD! Valhalla awaits! 🙌🔥
 
