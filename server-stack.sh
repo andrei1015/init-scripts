@@ -20,6 +20,8 @@ sudo pacman --noconfirm -Sy $(pacman -Ssq php-)
 sudo sed -i 's/^#\(LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so\)/\1/' /etc/httpd/conf/httpd.conf
 sudo sed -i 's/^\(LoadModule mpm_worker_module modules\/mod_mpm_worker.so\)/# \1/' /etc/httpd/conf/httpd.conf
 sudo sed -i 's/^\(LoadModule mpm_event_module modules\/mod_mpm_event.so\)/# \1/' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^#LoadModule rewrite_module modules\/mod_rewrite.so/LoadModule rewrite_module modules\/mod_rewrite.so/' /etc/httpd/conf/httpd.conf
+sudo sed -i '/<Directory "\/srv\/http\/">/,/<\/Directory>/ s/AllowOverride .*/AllowOverride All/' /etc/httpd/conf/httpd.conf
 sudo sh -c 'echo "LoadModule php_module modules/libphp.so" >> /etc/httpd/conf/httpd.conf'
 sudo sh -c 'echo "AddHandler php-script php" >> /etc/httpd/conf/httpd.conf'
 sudo sh -c 'echo "Include conf/extra/php_module.conf" >> /etc/httpd/conf/httpd.conf'
